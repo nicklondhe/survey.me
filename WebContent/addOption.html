@@ -10,20 +10,10 @@
 	<script src="scripts/jquerymobile.js"></script>
 	<script type="text/javascript">
 	 jQuery.ajaxSetup({ jsonp: null, jsonpCallback: null});
+	 var cntr = 0;
 		$(document).ready(function(){
 			 
-			$.ajax(
-				{type: "POST",
-				url: 'http://localhost:5000/pushsurvey',
-				data: {'SurveyName' : 'blah',
-				'Description' : 'blah',
-				'Questions' : [{'ID':'1','Content':'Whats my name?'}],
-				'Creator':'MANS',
-				'Created On' : '4/13/2013 18:31 PM',
-				'Updated On' : '4/13/2013 18:31 PM'},
-				//async: false,
-				dataType: 'json'
-				});
+
 			//console.info($("#optype").children().size());
 			$("#opttype").find("a").each(function(){
 				$(this).click(function(){
@@ -57,8 +47,40 @@
 				$("#custtd").show();
 			});
 			
-			$("#resdummy").keypress()
+			$("#resdummy").bind("keypress", function(e){
+				 var code = (e.keyCode ? e.keyCode : e.which);
+				 if(code == 13) { //Enter keycode
+				   //Do something
+				   var dummy = $("#resdummy");
+				   var myid = "nicknew_" + cntr;
+				   var text = '<div class="ui-grid-a"><div class="ui-block-a" style="width:3%"><a data-role="button" data-icon="delete" data-iconpos="notext" data-mini="true" data-inline="true" valign="middle"></a></div><div class="ui-block-b" style="width:97%"><input type="text" id="' +myid +'"></div></div>';
+				 	
+				   var copyIp = $(dummy).clone()[0];
+				   var valset = $(copyIp).val();
+				   
+				   //$(text).find(".ui-block-b").find("input").attr("id","nicknew");
+				   //$(text).find(".ui-block-b").find("input").val(valset);
+				   //console.info($(copyIp).html());
+				   $("#custtd").append(text).trigger("create");
+				   $("#"+myid).val(valset);
+				   $("#"+myid).parent().parent().parent().find("a").click(function(){
+					   $("#"+myid).parent().parent().parent().remove();
+				   });
+				   //console.info($("#"+myid).parent().parent().parent().find("a").attr('class'));
+				   cntr++;
+				   //$(copyIp).prepend("<a data-role='button' data-icon='delete' data-iconpos='notext' data-mini='true' data-inline='true'></a>");
+				   //$(copyIp).attr("id", "newip");
+				   //$(copyIp).appendTo($("#custtd"));
+				   $(dummy).val("");
+				 	
+				 }
+			});
 		});
+		
+		function removeMe() {
+			console.info(this);
+		}
+		
 	</script>
 </head> 
 <body> 
@@ -113,8 +135,13 @@
 			<input type="text" id="rngca" value="Completely agree" disabled>
 		</td>
 		<td colspan="2" id="custtd">
-			<input type="text" name="resdummy" id="resdummy" value="" placeholder="Add response option">
-		</td></tr>
+		<div class="ui-grid-solo">
+			<div class="ui-block-a">
+				<input type="text" name="resdummy" id="resdummy" value="" placeholder="Add response option">
+			</div>
+		</div>		
+		</td>
+		</tr>
 		</table>	
 	</div><!-- /content -->
 
