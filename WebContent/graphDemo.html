@@ -13,6 +13,18 @@
 	<script type="text/javascript">
 		var qid = 0;
 		var maxid;
+		var wrpData;
+		
+		window.setInterval(function(){
+			var currData = wrpData[qid].respData;
+			var len = currData.length;
+			
+			for (var i = 0; i < len; i++) {
+				currData[i].data += Math.floor(Math.random() * 5) + 1;
+			}
+			
+			renderPie(currData, wrpData[qid].qtext);
+		}, 3000);
 		
 		function renderPie(data, text) {
 			$("#pghdr").html(text);
@@ -59,7 +71,7 @@
 			                                   			                             			    	{label: "No", data: 25}
 			                                   			  ]}
 			            ]};
-			var wrpData = fullData.srvdata;
+			wrpData = fullData.srvdata;
 			maxid = wrpData.length - 1;
 			
 			renderPie(wrpData[qid].respData, wrpData[qid].qtext);
