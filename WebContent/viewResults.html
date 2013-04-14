@@ -1,0 +1,84 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<title>Template page</title> 
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<link rel="stylesheet" href="css/jquery.css" />
+		<link rel="stylesheet" href="css/sme.min.css" />
+	<script src="scripts/jquery.js"></script>
+	<script src="scripts/jquerymobile.js"></script>
+	<script type="text/javascript">
+		function showResults(data) {
+			//var dataObj = JSON.parse(data);
+			var dataObj = {"rsls": [
+			      {"id" : 1, "name" : "Survey 1", "count": "20"},
+			      {"id" : 2, "name" : "Survey 2", "count": "27"},
+			      {"id" : 3, "name" : "Survey 3", "count": "10"},
+			      {"id" : 4, "name" : "Survey 4", "count": "15"},
+			      {"id" : 5, "name" : "Survey 5", "count": "20"}
+			             ]};
+			var pfx = "<li><a id='";
+			var sfx = "</a></li>";
+			var outer = dataObj.rsls;
+			//console.info(dataObj.rsls.length);
+			$.each(outer, function(idx){
+				
+				var txt = pfx + outer[idx].id + "'>" + outer[idx].name +"<span class='ui-li-count' style='background-color:#FFF;'>"+outer[idx].count+"</span>" +sfx;
+				$("#svlist").append(txt);
+				$("#"+outer[idx].id).click({myid: outer[idx].id}, function(ev){
+					//localStorage["respid"] = ev.data.myid;
+					localStorage["respid"] = outer[idx].id;
+					window.location="graphDemo.html";
+				});
+			});
+			$("#svlist").listview("refresh");
+		}
+		
+		$(document).ready(function(){
+			//get my location, covert to range and get surveys
+			navigator.geolocation.getCurrentPosition(function(pos){
+				var lat = pos.coords.latitude;
+				var longi = pos.coords.longitude
+				console.info(lat + " ---- " + longi);
+				var lat_start = lat - 0.001;
+				var lat_end = lat + 0.001;
+				var long_start = longi - 0.001;
+				var long_end = longi + 0.001;
+				var someUrl = "";
+				showResults();
+				/*$.ajax({
+					type: "POST",
+					url: someUrl,
+					data: {lastrt: lat_start,
+						laend: lat_end,
+						lostrt: long_start,
+						loend: long_end},
+					success: showResults	
+				});*/
+			});	
+		});
+	</script>
+</head> 
+<body> 
+
+<div data-role="page">
+
+	<div data-role="header" data-theme="c">
+		<a data-role="button" href="#page1" data-icon="home" data-iconpos="left" class="ui-btn-left">Home</a>
+        <h3>
+            Survey.Me
+        </h3>
+        <a data-role="button" href="#page1" class="ui-btn-right">Logout</a>
+        
+	</div><!-- /header -->
+
+	<div data-role="content">	
+		<ul data-role="listview" id="svlist" data-theme="c"></ul>		
+	</div><!-- /content -->
+
+</div><!-- /page -->
+
+</body>
+</html>
