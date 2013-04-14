@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>sme</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>CreateSurveyServlet</display-name>
+    <servlet-name>CreateSurveyServlet</servlet-name>
+    <servlet-class>svme.servlets.CreateSurveyServlet</servlet-class>
+  </servlet>
+    <servlet>
+    <description></description>
+    <display-name>GetAvailableSurveysServlet</display-name>
+    <servlet-name>GetAvailableSurveysServlet</servlet-name>
+    <servlet-class>svme.servlets.GetAvailableSurveysServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CreateSurveyServlet</servlet-name>
+    <url-pattern>/CreateSurveyServlet</url-pattern>
+  </servlet-mapping>
+    <servlet-mapping>
+    <servlet-name>GetAvailableSurveysServlet</servlet-name>
+    <url-pattern>/GetAvailableSurveysServlet</url-pattern>
+  </servlet-mapping>
+</web-app>
