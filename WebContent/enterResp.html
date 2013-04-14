@@ -1,0 +1,65 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<title>Template page</title> 
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<link rel="stylesheet" href="css/jquery.css" />
+	<link rel="stylesheet" href="css/sme.min.css" />
+	<script src="scripts/jquery.js"></script>
+	<script src="scripts/jquerymobile.js"></script>
+
+</head> 
+<body> 
+
+<div data-role="page">
+	<script type="text/javascript">
+		var srvqns;
+		var cidx = 0;
+		$(document).bind('pageinit', function(event, ui){
+			var svyid = localStorage["respid"];
+			//assume i get the id and everything here
+			var svyObj = {"questions" : [
+			      {"qnid":1, "qnTxt": "How old are you?", respType : "cust", respOpt:[
+			         {"respCode" : "1", "respText" : "0-18"},
+			         {"respCode" : "2", "respText" : "19-24"},
+			         {"respCode" : "3", "respText" : "25-35"},
+			         {"respCode" : "4", "respText" : "36-60"},
+			         {"respCode" : "5", "respText" : "60+"}
+			         ]},
+				      {"qnid":2, "qnTxt": "Gender", respType : "cust", respOpt:[{"respCode" : "1", "respText" : "Male"},
+				                                                     			         {"respCode" : "2", "respText" : "Female"}]},
+				      {"qnid":3, "qnTxt": "Do you consume alcohol?", respType : "yn", respOpt:[{"respCode" : "y", "respText" : "Yes"},
+				                                                                               {"respCode" : "n", "respText" : "No"}]} 
+			   ]};
+			
+			srvqns = svyObj.questions;
+			var qt = srvqns[cidx].qnTxt;
+			$("#pghdr").html(qt);
+			var dt = srvqns[cidx].respOpt;
+			var pfx = "<li><a id='";
+			var sfx = "</a></li>";
+			$.each(dt, function(idx){
+				var txt = pfx + dt[idx].respCode + "'>" + dt[idx].respText + sfx;
+				$("#resplist").append(txt);
+			});
+			$("#resplist").listview("refresh");
+		});
+	</script>
+	<div data-role="header" data-role="a">
+		<a href="viewSurveys.html" data-icon="home">Home</a>
+		<h1 id="pghdr">Page Title</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">	
+		<ul data-role="listview" id="resplist" data-theme="b"></ul>	
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<a id="prevbtn" data-icon="arrow-l" data-mini="true" align="ui-btn-left">Prev</a>
+		<a id ="nextbtn" data-icon="arrow-r" data-mini="true" class="ui-btn-right">Next</a>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+</body>
+</html>

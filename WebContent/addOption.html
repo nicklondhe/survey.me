@@ -89,13 +89,7 @@
 			 }
 		 } else {
 			 $("#qnh").css("border-color","red");
-		 }
-		 
-		 
-		 
-		 
-		 
-			
+		 }	
 	 }
 	 
 	 var cntr = 0;
@@ -140,6 +134,8 @@
 				$("#custtd").show();
 				//$("#cgcust").addClass("ui-btn-active");
 			});
+			
+			$("#qnh").height($("#optarea").height());
 			
 			$("#resdummy").bind("keypress", function(e){
 				 var code = (e.keyCode ? e.keyCode : e.which);
@@ -200,11 +196,11 @@
 			</td>
 		</tr> -->
 		<tr>
-			<td width="65%">
-				<input type="text" name="qn" id="qnh" value="" placeholder="Enter question text">
+			<td width="75%">
+				<textarea name="qn" id="qnh"  placeholder="Enter question text" valign="middle"></textarea>
 			</td>
 			<td>
-				<div id="opttype" data-role="controlgroup" data-type="horizontal" width = "100%">
+				<div id="opttype" data-role="controlgroup" width = "100%">
 					<a data-role="button" id="cgyn">Yes / No</a>
 					<a data-role="button" id="cgtf">True / False</a>
 					<a data-role="button" id="cgrng">Range (1 - 5)</a>
