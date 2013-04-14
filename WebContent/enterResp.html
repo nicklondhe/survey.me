@@ -16,6 +16,25 @@
 	<script type="text/javascript">
 		var srvqns;
 		var cidx = 0;
+		var maxidx;
+		
+		function renderQuestion() {
+			var qt = srvqns[cidx].qnTxt;
+			$("#pghdr").html(qt);
+			var dt = srvqns[cidx].respOpt;
+			$("#resplist > li").each(function(){
+				$(this).remove();
+			});
+			var pfx = "<li><a id='";
+			var sfx = "</a></li>";
+			$.each(dt, function(idx){
+				var txt = pfx + dt[idx].respCode + "'>" + dt[idx].respText + sfx;
+				$("#resplist").append(txt);
+			});
+			$("#resplist > li").css("text-align", "center");
+			$("#resplist").listview("refresh");
+		}
+		
 		$(document).bind('pageinit', function(event, ui){
 			var svyid = localStorage["respid"];
 			//assume i get the id and everything here
@@ -34,16 +53,21 @@
 			   ]};
 			
 			srvqns = svyObj.questions;
-			var qt = srvqns[cidx].qnTxt;
-			$("#pghdr").html(qt);
-			var dt = srvqns[cidx].respOpt;
-			var pfx = "<li><a id='";
-			var sfx = "</a></li>";
-			$.each(dt, function(idx){
-				var txt = pfx + dt[idx].respCode + "'>" + dt[idx].respText + sfx;
-				$("#resplist").append(txt);
+			maxidx = srvqns.length - 1;
+			renderQuestion();
+			$("#prevbtn").click(function(){
+				if (cidx >= 1) 
+					cidx --;
+				
+				renderQuestion();
 			});
-			$("#resplist").listview("refresh");
+			
+			$("#nextbtn").click(function(){
+				if (cidx < maxidx) 
+					cidx ++;
+				
+				renderQuestion();
+			});
 		});
 	</script>
 	<div data-role="header" data-role="a">
