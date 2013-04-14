@@ -10,6 +10,17 @@
 <script src="scripts/jquery.js"></script>
 <script src="scripts/jquerymobile.js"></script>
 <script type="text/javascript">
+
+function getsId1(event)
+{
+	/*var idcount = event.data.i;
+	
+	$("gridtable").remove
+	
+	$("#gridtable").append("<tr><td width='0%' style='padding:0%; margin:0%; visibility:hidden'><input type='hidden' id='SurveyID'></td><td><input type='text' id='name' name='name' /></td><td><input type='text' id='desc' name='desc' /></td><td><center><div data-role='controlgroup' data-mini='true' data-type='horizontal'><a href='index.html' id='neadd'"+(i)+" data-iconpos='notext' data-icon='plus' data-role='button'>Yes</a><a href='index.html' id='purge' data-iconpos='notext' data-icon='delete' data-role='button'>No</a></div></center></td></tr>").trigger('create');*/
+	$.mobile.changePage("addOption.html", {transition: "slideup"});
+}
+
 function getsId(event)
 {
 	var name;
@@ -38,8 +49,8 @@ function getsId(event)
  	$.ajax({url:"index.html",type:"post",data:jsonObject,datatype: "json",success:function(result){
 		alert("correct (y)");
 		//var j = $.parseJSON(result);
-		var ID = j[0];
-		localStorage["surveyId"] = 1234;
+		//var ID = j[0];
+		//localStorage["surveyId"] = 1234;
 		}});
 }
 	$(document).ready(function(){ 
@@ -88,13 +99,13 @@ function getsId(event)
 			}*/
 			
 			var htmlStr;
-			for(var i=0; i<result2.survey.length; i++)
-			{
+			for(var i=0; i<result2.survey.length; i++)			{
 				//console.info(result2.survey[i].desc);
-				$("#gridtable").append("<tr><td width='0%' style='padding:0%; margin:0%; visibility:hidden'><input type='hidden' id='SurveyId' value="+result2.survey[i].SurveyID+"></td><td><input id='name' type='text' value="+result2.survey[i].name+" /></td><td><input type='text' id='desc' type='text' value="+result2.survey[i].desc+" /></td><td><center><div data-role='controlgroup' data-mini='true' data-type='horizontal'><a href='index.html' id='neadd"+i+"' data-iconpos='notext' data-icon='plus' data-role='button'>Yes</a><a href='index.html' id='purge' data-iconpos='notext' data-icon='delete' data-role='button'>No</a></div></center></td></tr>").trigger('create');
+				$("#gridtable").append("<tr><td width='0%' style='padding:0%; margin:0%; visibility:hidden'><input type='hidden' id='SurveyId' value="+result2.survey[i].SurveyID+"></td><td><input id='name' type='text' value="+result2.survey[i].name+" /></td><td><input type='text' id='desc' type='text' value="+result2.survey[i].desc+" /></td><td><center><div data-role='controlgroup' data-mini='true' data-type='horizontal'><a href='index.html' id='neadd"+i+"' data-iconpos='notext' data-icon='plus' data-role='button'>Yes</a><a href='index.html' id='purge"+i+"' data-iconpos='notext' data-icon='delete' data-role='button'>No</a></div></center></td></tr>").trigger('create');
 				$("#neadd"+i).click({myid: result2.survey[i].SurveyID},getsId);
 			}
-			$("#gridtable").append("<tr><td width='0%' style='padding:0%; margin:0%; visibility:hidden'><input type='hidden' id='SurveyID'></td><td><input type='text' id='name' name='name' /></td><td><input type='text' id='desc' name='desc' /></td><td><center><div data-role='controlgroup' data-mini='true' data-type='horizontal'><a href='index.html' id='neadd' data-iconpos='notext' data-icon='plus' data-role='button'>Yes</a><a href='index.html' id='purge' data-iconpos='notext' data-icon='delete' data-role='button'>No</a></div></center></td></tr>").trigger('create');
+			$("#gridtable").append("<tr><td width='0%' style='padding:0%; margin:0%; visibility:hidden'><input type='hidden' id='SurveyID'></td><td><input type='text' id='name' name='name' /></td><td><input type='text' id='desc' name='desc' /></td><td><center><div data-role='controlgroup' data-mini='true' data-type='horizontal'><a href='index.html' id='newadd' data-iconpos='notext' data-icon='plus' data-role='button'>Yes</a><a href='index.html' id='purge' data-iconpos='notext' data-icon='delete' data-role='button'>No</a></div></center></td></tr>").trigger('create');
+			$("#newadd").click({count:i},getsId1);
 		//}});
 });
 </script>
