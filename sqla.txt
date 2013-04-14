@@ -1,0 +1,13 @@
+1. insert into surveyheader(id,name,desc,date,latitude,longitude)values ('','','','','','');
+
+2. select id from surveyheader where name='name' and desc='desc';
+
+3. //take backup of incoming id
+
+	delete from surveyheader where id='id';
+
+	use insert now by putting thr id as the one backed up above
+
+4. select * from surveyheader where latitude between someting and longitude between something
+
+5. 

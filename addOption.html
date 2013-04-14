@@ -1,0 +1,245 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<title>Add Question</title> 
+
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<link rel="stylesheet" href="css/jquery.css" />
+		<link rel="stylesheet" href="css/sme.min.css" />
+	<script src="scripts/jquery.js"></script>
+	<script src="scripts/jquerymobile.js"></script>
+	<script type="text/javascript">
+	 var qnId = 1;
+	 var selId;
+	 
+	 function createOrNavigate(event) {
+
+		 var tp = event.data.type;
+		 var qid = (tp == "p") ? qnId - 1 : qnId + 1;
+
+		 //push current q
+		 var resp = [];
+		 var c = 0;
+		 $("#qtable").find("td:visible").find("input").each(function(){
+			 if (c == 0) {
+				 c++;
+				 return;
+			 }
+			 
+			 var row = {name: $(this).attr('name'), value: $(this).val()};
+			 resp.push(row);
+		 });
+		 var qtxt = $("#qnh").val();
+		 
+		 if (qtxt != "") {
+			 var currObj = {qtext : $("#qnh").val(), qtype : selId.substring(2), responses : resp};
+			 localStorage["qdata"+qnId] = JSON.stringify(currObj);
+			 
+			 if (qid > 0) {
+					qnId = qid;
+					var currData = localStorage["qdata"+qid];
+					
+					if (typeof currData == "undefined") {
+						//new
+						$("#yntd").hide();
+						$("#tftd").hide();
+						$("#rngtd").hide();
+						$("#custtd").show();
+						$("#custtd").find(".ui-grid-a").each(function(){
+							$(this).remove();
+						});
+						$("#opttype").find("a").each(function(){
+							$(this).click(function(){
+								$(this).parent().find(".ui-btn-active").removeClass("ui-btn-active");
+							});
+						});
+						//$("#cgyn").removeClass("ui-btn-active");
+						//$("#cgtf").removeClass("ui-btn-active");
+						//$("#cgrng").removeClass("ui-btn-active");
+						//$("#cgcust").addClass("ui-btn-active");
+						$("#qnh").val('');
+					} else {
+						var cObj = JSON.parse(currData);
+						$("#qnh").val(cObj.qtext);
+						var type = cObj.qtype;
+						
+						if (type == "yn") {
+							$("#yntd").show();
+							$("#tftd").hide();
+							$("#rngtd").hide();
+							$("#custtd").hide();
+						} else if (type == "tf") {
+							$("#yntd").hide();
+							$("#tftd").show();
+							$("#rngtd").hide();
+							$("#custtd").hide();
+						} else if (type == "rng") {
+							$("#yntd").hide();
+							$("#tftd").hide();
+							$("#rngtd").show();
+							$("#custtd").hide();
+						} else if (type == "cust") {
+							$("#yntd").hide();
+							$("#tftd").hide();
+							$("#rngtd").hide();
+							$("#custtd").show();
+						}
+						
+					}
+			 }
+		 } else {
+			 $("#qnh").css("border-color","red");
+		 }	
+	 }
+	 
+	 var cntr = 0;
+		$(document).ready(function(){
+			 $("#nextbtn").click({type: "n"}, createOrNavigate).removeClass("ui-btn-hover").removeClass("ui-btn-up");
+			 $("#prevbtn").click({type: "p"}, createOrNavigate).removeClass("ui-btn-hover").removeClass("ui-btn-up");
+
+			//console.info($("#optype").children().size());
+			$("#opttype").find("a").each(function(){
+				$(this).click(function(){
+					$(this).parent().find(".ui-btn-active").removeClass("ui-btn-active");
+					$(this).addClass("ui-btn-active");
+					selId = $(this).attr('id');
+				});
+			});
+			
+			$("#cgyn").click(function(){
+				$("#yntd").show();
+				$("#tftd").hide();
+				$("#rngtd").hide();
+				$("#custtd").hide();
+				//$("#cgyn").addClass("ui-btn-active");
+			});
+			$("#cgtf").click(function(){
+				$("#yntd").hide();
+				$("#tftd").show();
+				$("#rngtd").hide();
+				$("#custtd").hide();
+				//$("#cgtf").addClass("ui-btn-active");
+			});
+			$("#cgrng").click(function(){
+				$("#yntd").hide();
+				$("#tftd").hide();
+				$("#rngtd").show();
+				$("#custtd").hide();
+				//$("#cgrng").addClass("ui-btn-active");
+			});
+			$("#cgcust").click(function(){
+				$("#yntd").hide();
+				$("#tftd").hide();
+				$("#rngtd").hide();
+				$("#custtd").show();
+				//$("#cgcust").addClass("ui-btn-active");
+			});
+			
+			$("#qnh").height($("#optarea").height());
+			
+			$("#resdummy").bind("keypress", function(e){
+				 var code = (e.keyCode ? e.keyCode : e.which);
+				 if(code == 13) { //Enter keycode
+				   //Do something
+				   var dummy = $("#resdummy");
+				   var myid = "nicknew_" + cntr;
+				   var text = '<div class="ui-grid-a"><div class="ui-block-a" style="width:3%"><a data-role="button" data-icon="delete" data-iconpos="notext" data-mini="true" data-inline="true" valign="middle"></a></div><div class="ui-block-b" style="width:97%"><input type="text" id="' +myid +'"></div></div>';
+				 	
+				   var copyIp = $(dummy).clone()[0];
+				   var valset = $(copyIp).val();
+				   
+				   //$(text).find(".ui-block-b").find("input").attr("id","nicknew");
+				   //$(text).find(".ui-block-b").find("input").val(valset);
+				   //console.info($(copyIp).html());
+				   $("#custtd").append(text).trigger("create");
+				   $("#"+myid).val(valset);
+				   $("#"+myid).parent().parent().parent().find("a").click(function(){
+					   $("#"+myid).parent().parent().parent().remove();
+				   });
+				   //console.info($("#"+myid).parent().parent().parent().find("a").attr('class'));
+				   cntr++;
+				   //$(copyIp).prepend("<a data-role='button' data-icon='delete' data-iconpos='notext' data-mini='true' data-inline='true'></a>");
+				   //$(copyIp).attr("id", "newip");
+				   //$(copyIp).appendTo($("#custtd"));
+				   $(dummy).val("");
+				 	
+				 }
+			});
+		});
+		
+		function removeMe() {
+			console.info(this);
+		}
+		
+	</script>
+</head> 
+<body> 
+
+<div data-role="page">
+
+	<div data-role="header" data-theme="c">
+		<a href="index.html" data-icon="home">Home</a>
+		<h1>Survey.me</h1>
+		<a href="logout.html" data-icon="grid">Logout</a>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="c">
+						
+		<table id="qtable" class="ui-table" border="1">
+	<!-- <tr>
+			<td width="90%" vAlign="middle">Add Question</td>
+			<td width="10%">
+				<div data-role="controlgroup" data-type="horizontal">
+					<a data-role="button" data-icon="plus" data-iconpos="notext" data-inline="true" data-mini="true"></a>
+					<a data-role="button" data-icon="delete" data-iconpos="notext" data-inline="true" data-mini="true"></a>
+				</div>
+			</td>
+		</tr> -->
+		<tr>
+			<td width="75%">
+				<textarea name="qn" id="qnh"  placeholder="Enter question text" valign="middle"></textarea>
+			</td>
+			<td>
+				<div id="opttype" data-role="controlgroup" width = "100%">
+					<a data-role="button" id="cgyn">Yes / No</a>
+					<a data-role="button" id="cgtf">True / False</a>
+					<a data-role="button" id="cgrng">Range (1 - 5)</a>
+					<a data-role="button" class="ui-btn-active ui-btn-active" id="cgcust">Custom</a>
+				</div>
+			</td>
+		</tr>
+		<tr>
+		<td colspan="2" id="yntd" style="display:none">
+			<input type="text" id="ynyes" name="y" value="Yes" disabled>
+			<input type="text" id="ynno" name="n" value="No" disabled>
+		</td>
+		<td colspan="2" id="tftd" style="display:none">
+			<input type="text" id="tftrue" name="t" value="True" disabled>
+			<input type="text" id="tfffalse" name="f" value="False" disabled>
+		</td>
+		<td colspan="2" id="rngtd" style="display:none">
+			<input type="text" id="rngcd" name="cd" value="Completely disagree" disabled>
+			<input type="text" id="rngsd" name = "sd" value="Somewhat disagree" disabled>
+			<input type="text" id="rngne" name = "neu" value="Neutral" disabled>
+			<input type="text" id="rngsa" name="sa" value="Somewhat agree" disabled>
+			<input type="text" id="rngca" name ="ca" value="Completely agree" disabled>
+		</td>
+		<td colspan="2" id="custtd">
+		<div class="ui-grid-solo">
+			<div class="ui-block-a">
+				<input type="text" name="resdummy" id="resdummy" value="" placeholder="Add response option">
+			</div>
+		</div>		
+		</td>
+		</tr>
+		</table>	
+	</div><!-- /content -->
+
+	<div data-role="footer" data-theme="c">
+		<a href="addOption.html" id="prevbtn" data-icon="arrow-l" data-mini="true" align="ui-btn-left">Prev</a>
+		<a href="addOption.html" id ="nextbtn" data-icon="arrow-r" data-mini="true" class="ui-btn-right">Next</a>
+	</div>
+</div><!-- /page -->
+
+</body>
+</html>

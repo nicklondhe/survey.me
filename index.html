@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Template page</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/jquery.css" />
+<link rel="stylesheet" href="css/sme.min.css" />
+
+<script src="scripts/jquery.js"></script>
+<script src="scripts/jquerymobile.js"></script>
+<script type="text/javascript">
+function getsId(event)
+{
+	var name;
+	var desc;
+	//alert("called");
+	var this2=event.data.myid;
+	alert(this2);
+	$(this2).parent().parent().find("td").each(function()
+	{
+		
+		if($(this).id=="name");
+			name=$("#name").val();
+		if($(this).id=="desc");
+			desc=$("#desc").val();
+	});
+	var d=new Date();
+		var currDate = d.getFullYear() + "/" + (d.getMonth()+1) + "/" + d.getDate();
+		//+" "+d.getHours+":"+d.getMinutes+":"+d.getSeconds
+		//console.info(currDate);
+		var jsonObject = new Object();
+		jsonObject.SurveyId="";
+		jsonObject.name=name;
+		jsonObject.desc=desc;
+		jsonObject.cdate=currDate;
+		//console.info(JSON.stringify(jsonObject));
+ 	$.ajax({url:"index.html",type:"post",data:jsonObject,datatype: "json",success:function(result){
+		alert("correct (y)");
+		//var j = $.parseJSON(result);
+		var ID = j[0];
+		localStorage["surveyId"] = 1234;
+		}});
+}
+	$(document).ready(function(){ 
+		//$.ajax({url:"index.html",success:function(result){
+		//alert("correct (y)");
+		
+		// var jsonObj = []; //declare object
+
+    /*for (var i = 0; i < 5; i++) {
+        jsonObj.push({"SurveyId":1,"name":"name1","desc":"desc1" });
+		jsonObj.push({"SurveyId":2,"name":"name2","desc":"desc2" });
+		jsonObj.push({"SurveyId":3,"name":"name3","desc":"desc3" });
+    }*/
+		
+		var result2={"survey":[
+        {
+
+            "name":"blah",
+
+            "SurveyID":"1234",
+
+			"desc":"this isnotasurvey"
+		},
+
+		{
+
+			"name":"blah32",
+
+            "SurveyID":"12we",
+
+			"desc":"thisis notasurvey"
+		}]
+
+	}
+		/*var j = JSON.parse(jsonObj);
+			$(j).each(function()
+			{
+				$("#gridtble").append
+				($("<tr><td id='SurveyId' type='hidden' value='$(this).SurveyId'></td><td id='name' type='text' value='$(this).name'></td><td id='desc' type='text' value='$(this).desc'></td></tr>"))
+			})*/
+			/*var htmlStr;
+			for(var i=0; i<result2.survey.length; i++)
+			{
+				$("#gridtble").append
+				("<tr><td id='SurveyId' type='hidden' value='$(this).SurveyId'></td><td id='name' type='text' value='$(this).name'></td><td id='desc' type='text' value='$(this).desc'></td></tr>");
+			}*/
+			
+			var htmlStr;
+			for(var i=0; i<result2.survey.length; i++)
+			{
+				//console.info(result2.survey[i].desc);
+				$("#gridtable").append("<tr><td width='0%' style='padding:0%; margin:0%; visibility:hidden'><input type='hidden' id='SurveyId' value="+result2.survey[i].SurveyID+"></td><td><input id='name' type='text' value="+result2.survey[i].name+" /></td><td><input type='text' id='desc' type='text' value="+result2.survey[i].desc+" /></td><td><center><div data-role='controlgroup' data-mini='true' data-type='horizontal'><a href='index.html' id='neadd"+i+"' data-iconpos='notext' data-icon='plus' data-role='button'>Yes</a><a href='index.html' id='purge' data-iconpos='notext' data-icon='delete' data-role='button'>No</a></div></center></td></tr>").trigger('create');
+				$("#neadd"+i).click({myid: result2.survey[i].SurveyID},getsId);
+			}
+			$("#gridtable").append("<tr><td width='0%' style='padding:0%; margin:0%; visibility:hidden'><input type='hidden' id='SurveyID'></td><td><input type='text' id='name' name='name' /></td><td><input type='text' id='desc' name='desc' /></td><td><center><div data-role='controlgroup' data-mini='true' data-type='horizontal'><a href='index.html' id='neadd' data-iconpos='notext' data-icon='plus' data-role='button'>Yes</a><a href='index.html' id='purge' data-iconpos='notext' data-icon='delete' data-role='button'>No</a></div></center></td></tr>").trigger('create');
+		//}});
+});
+</script>
+</head>
+<body>
+<div data-role="page">
+<div data-role="header" data-theme="c">
+<a data-role="button" href="#page1" data-icon="home" data-iconpos="left" class="ui-btn-left">Home</a>
+        <h3>
+            Survey.Me
+        </h3>
+        <a data-role="button" href="#page1" class="ui-btn-right">Logout</a>
+        
+</div><!-- /header -->
+
+<div data-role="content" data-theme="c">	
+<!--<p>The grid goes here.</p>-->
+<form name="mainpageform" id="mainpageform" method="post"> 	
+<table class="ui-table" border="1" id="gridtable">
+			<tr>
+            <td width="0%" style="padding:0%; margin:0%; visibility:hidden">
+            	<input type="hidden">
+            </td>
+            <td style="width:43%;">
+            	<h3>Name</h3>
+            </td>
+            <td style="width:42%;">
+            	<h3>Description</h3>
+            </td>
+            <td style="width:15%; text-align:center;">
+      			<h3>Actions</h3>
+            </td>
+            </tr>
+        </table> <!--table-->
+        </form>
+</div><!-- /content -->
+
+
+</div><!-- /page -->
+
+</body>
+</html>
