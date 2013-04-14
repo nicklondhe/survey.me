@@ -31,7 +31,10 @@
 				var txt = pfx + dt[idx].respCode + "'>" + dt[idx].respText + sfx;
 				$("#resplist").append(txt);
 			});
-			$("#resplist > li").css("text-align", "center");
+			$("#resplist > li").find("a").click(function(){
+				$(this).parent().parent().parent().parent().find(".ui-btn-active").removeClass("ui-btn-active");
+				$(this).parent().parent().parent().addClass("ui-btn-active");
+			});
 			$("#resplist").listview("refresh");
 		}
 		
