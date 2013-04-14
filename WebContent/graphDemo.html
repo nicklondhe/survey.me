@@ -1,0 +1,104 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<title>Template page</title> 
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+		<link rel="stylesheet" href="css/jquery.css" />
+	<link rel="stylesheet" href="css/sme.min.css" />
+	<script src="scripts/jquery.js"></script>
+	<script src="scripts/jquery.flot.min.js"></script>
+	<script src="scripts/jquery.flot.pie.min.js"></script>
+	<script src="scripts/jquerymobile.js"></script>
+	<script type="text/javascript">
+		var qid = 0;
+		var maxid;
+		
+		function renderPie(data, text) {
+			$("#pghdr").html(text);
+			$("#grphdiv").unbind();
+			$.plot($("#grphdiv"), data, {
+				series: {
+					pie: { 
+						show: true,
+						radius: 1,
+		                label: {
+		                    show: true,
+		                    radius: 2/3,
+		                    formatter: function(label, series){
+		                        return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+		                    },
+		                    threshold: 0.08
+		                }
+					}
+				},
+				legend: {
+					show: false
+				}
+			});
+		}
+		
+		$(document).ready(function(){
+			
+			
+			$("#grphdiv").width(0.97 * $(window).width()).height(0.8 * $(window).height());
+			var fullData = {"srvdata" : [
+			    {"qtext" : "What is your age range?", "respData": [
+			    	{label: "0-18", data: 25},
+			    	{label: "19-24", data: 10},
+			    	{label: "25-35", data: 35},
+			    	{label: "36-60", data: 12},
+			    	{label: "60+", data: 8}
+			    ]},
+			    {"qtext" : "Gender", "respData": [
+			                                   			    	{label: "Male", data: 55},
+			                                   			    	{label: "Female", data: 45}
+			                                   			    ]},
+			                                   			 {"qtext" : "Do you consume alcohol?", "respData": [
+			                                   			                             			    	{label: "Yes", data: 65},
+			                                   			                             			    	{label: "No", data: 25}
+			                                   			  ]}
+			            ]};
+			var wrpData = fullData.srvdata;
+			maxid = wrpData.length - 1;
+			
+			renderPie(wrpData[qid].respData, wrpData[qid].qtext);
+			
+			$("#prevbtn").click(function(){
+				if (qid >= 1) 
+					qid --;
+				
+				renderPie(wrpData[qid].respData, wrpData[qid].qtext);
+			});
+			
+			$("#nextbtn").click(function(){
+				if (qid < maxid) 
+					qid ++;
+				
+				renderPie(wrpData[qid].respData, wrpData[qid].qtext);
+			});
+
+		});
+	</script>
+</head> 
+<body> 
+
+<div data-role="page">
+
+	<div data-role="header" data-theme="c">
+		<h1 id="pghdr">Page Title</h1>
+ 
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="c">
+		<div id="grphdiv"></div>		
+	</div><!-- /content -->
+
+	<div data-role="footer" data-theme="c">
+		<a id="prevbtn" data-icon="arrow-l" data-mini="true" align="ui-btn-left">Prev</a>
+		<a id ="nextbtn" data-icon="arrow-r" data-mini="true" class="ui-btn-right">Next</a>
+	</div>
+</div><!-- /page -->
+
+</body>
+</html>
